@@ -3,9 +3,8 @@
 /**
  * print_buffer - Prints the contents of the buffer if it exists
  * @buffer: Array of chars
- * @buff_ind: Index at which to add the next char, represents the length.
+ * @buff_ind: Index at which to add next char, represents the length.
  */
-
 void print_buffer(char buffer[], int *buff_ind)
 {
 	if (*buff_ind > 0)
@@ -19,10 +18,10 @@ void print_buffer(char buffer[], int *buff_ind)
  * @format: Format string
  * Return: Number of printed chars
  */
-
 int _printf(const char *format, ...)
 {
-	int printed_chars = 0;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, output_buff_ind = 0;
 	va_list list;
 	char output_buffer[BUFF_SIZE];
 
@@ -31,29 +30,35 @@ int _printf(const char *format, ...)
 
 	va_start(list, format);
 
-	for (int i = 0; format[i] != '\0'; i++)
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
-			output_buffer[printed_chars++] = format[i];
-			if (printed_chars == BUFF_SIZE)
-			{
-				print_buffer(output_buffer, &printed_char);
-			}
+			output_buffer[output_buff_ind++] = format[i];
+			if (output_buff_ind == BUFF_SIZE)
+				print_buffer(output_buffer, &output_buff_ind);
+			printed_chars++;
 		}
 		else
 		{
-			print_buffer(output_buffer, &printed_chars);
-			++i; // Move to the next character after '%'
-			printed_chars += handle_print(format, &i, list, output_buffer);
-			if (printed_chars == -1)
+			print_buffer(output_buffer, &output_buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, output_buffer,
+				flags, width, precision, size);
+			if (printed == -1)
 				return (-1);
+			printed_chars += printed;
 		}
 	}
 
-	print_buffer(output_buffer, &printed_chars);
-	
+	print_buffer(output_buffer, &output_buff_ind);
+
 	va_end(list);
 
-	return printed_chars;
+	return (printed_chars);
 }
+
