@@ -1,40 +1,6 @@
-#include "main.h"
+#include <stdarg.h>
+#include <stdio.h>
 
-/**
- * printf_helper - Helper function for _printf
- * @num: The number to print
- *
- * Return: The number of characters printed
- */
-int printf_helper(int num)
-{
-	int count = 0;
-	int temp, len;
-
-	if (num < 0)
-	{
-		count += putchar('-');
-		num *= -1;
-	}
-
-	temp = num;
-	while (temp != 0)
-	{
-		temp /= 10;
-		count++;
-	}
-
-	temp = num;
-	while (temp != 0)
-	{
-		len = temp % 10;
-		putchar(len + '0');
-		temp /= 10;
-		count++;
-	}
-
-	return (count);
-}
 
 /**
  * _printf - Prints the given format string
@@ -43,61 +9,49 @@ int printf_helper(int num)
  * Return: The number of characters printed
  */
 
-int _printf(const char *format, ...)
-{
-	va_list args;
-	int i, count = 0;
 
-	va_start(args, format);
+int _printf(const char *format, ...) {
+    va_list args;
+    const char *p;
+    char *val;
+    char *c;
+    int count = 0;
 
-	for (i = 0; format && format[i]; i++)
-	{
-		if (format[i] == '%')
-		{
-			i++;
-			switch (format[i])
-			{
-				case 'c':
-				{
-					char c = va_arg(args, int);
+    va_start(args, format);
 
-					count += putchar(c);
-					break;
-				}
-				case 's':
-				{
-					char *s = va_arg(args, char*);
+    for (p = format; *p != '\0'; p++) {
+        if (*p != '%') {
+            putchar(*p);
+            count++;
+            continue;
+        }
 
-					while (*s)
-					{
-						putchar(*s);
-						s++;
-						count++;
-					}
-					break;
-				}
-				case 'd':
-				{
-					int num = va_arg(args, int);
+        p++;
 
-					if (num < 0)
-					{
-						count += putchar('-');
-						num *= -1;
-					}
-					count += printf_helper(num);
-					break;
-				}
-				default:
-					break;
-			}
-		}
-		else
-		{
-			putchar(format[i]);
-			count++;
-		}
-	}
-	va_end(args);
-	return (count);
+        switch (*p) {
+        case 'c': {
+            char val = va_arg(args, int);
+            putchar(val);
+            count++;
+            break;
+        }
+        case 's': {
+            val = va_arg(args, char *);
+            for (c = val; *c != '\0'; c++) {
+                putchar(*c);
+                count++;
+            }
+            break;
+        }
+        case '%':
+            putchar('%');
+            count++;
+            break;
+        }
+    }
+
+    va_end(args);
+
+    return count;
 }
+
