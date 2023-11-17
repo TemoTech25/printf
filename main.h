@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -32,6 +33,5 @@ int output_pointer(va_list argList);
 int output_hex_extra(unsigned long int num);
 int output_reversed_string(va_list argList);
 int output_rot13(va_list argList);
-
 
 #endif
