@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * output_printf - Selects and executes the correct function to print
- * @format: The format string containing conversion special
+ * _printf - a function that produces output according to a format.
+ * @format: argument
  *
  * Return: The number of characters printed.
  */
-int output_printf(const char *format, ...)
+int _printf(const char *format, ...)
 {
 	convert p[] = {
 		{"%s", output_string}, {"%c", output_char},
