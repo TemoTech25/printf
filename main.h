@@ -9,13 +9,13 @@
 
 /**
  * struct format - link the conversion specifiers for printf
- * @id: type char pointer of the specifier i.e (l, h) for (d, i, u, o, x, X)
+ * @iv: type char pointer of the specifier i.e (l, h) for (d, i, u, o, x, X)
  * @f: type pointer to function for the conversion specifier
  */
 
 typedef struct format
 {
-	char *id;
+	char *iv;
 	int (*f)();
 } convert_printf;
 
