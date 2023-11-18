@@ -35,7 +35,6 @@ int printf_helper(int num)
 
         return (count);
 }
-i
 
 int _printf(const char *format, ...)
 {

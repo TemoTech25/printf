@@ -40,5 +40,5 @@ int print_exc_string(va_list val);
 int print_pointer(va_list val);
 int print_hex_extra(unsigned long int num);
 int print_rot13(va_list val);
-
+int printf_helper(int num);
 #endif
