@@ -10,8 +10,8 @@ int _printf(const char *format, ...)
 {
 	convert p[] = {
 		{"%s", output_string}, {"%c", output_char},
-		{"%%", output_percent},
-		{"%i", output_int}, {"%d", output_int}, {"%r", output_reversed_string},
+		{"%%", output_percent}, {"%i", output_int},
+		{"%d", output_int}, {"%r", output_reversed_string},
 		{"%R", output_rot13}, {"%b", output_binary},
 		{"%u", output_unsigned},
 		{"%o", output_octal}, {"%x", output_hex}, {"%X", output_hex_uppercase},
@@ -19,12 +19,22 @@ int _printf(const char *format, ...)
 	};
 
 	va_list args;
-	int i = 0, j, length = 0;
+
+	int i;
+	int j;
+	int length;
+
+	i = 0;
+	j = 0;
+	length = 0;
 
 	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-		return (-1);
 
+	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+	{
+		return (-1);
+	}
+Here:	
 	while (format[i] != '\0')
 	{
 		j = 13;
@@ -45,4 +55,3 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (length);
 }
-
